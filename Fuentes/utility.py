@@ -6,6 +6,7 @@ import numpy  as np
 
 # CResidual-Dispersion Entropy
 def entropy_dispersion(x,d,tau,c):
+    
     # Parametros
     x = np.asarray(x)
     n = len(x)
@@ -18,6 +19,7 @@ def entropy_dispersion(x,d,tau,c):
 
     # Paso 2: Crear vectores-embedding
     embeddings = []
+
     for i in range(n - (d - 1) * tau):
         window = x_norm[i : i + tau * d : tau]
         embeddings.append(window)
@@ -53,6 +55,7 @@ def entropy_permuta(x, m, tau):
     # Parametros
     x = np.asarray(x)
     n = len(x)
+
     if n < (m - 1) * tau + 1:
         raise ValueError("La serie es demasiado corta para los parámetros dados.")
 
@@ -61,8 +64,6 @@ def entropy_permuta(x, m, tau):
 
     for i in range(n - (m - 1) * tau):
         window = x[i : i + tau * m : tau] # 2a Crear vector-embedding
-        #ranks = pd.Series(window).rank(method='first').astype(int).values # 2b
-        #pattern = tuple(ranks - 1)
         pattern = tuple(np.argsort(window)) #2b Ordena los elementos
         patterns.append(pattern)
     
