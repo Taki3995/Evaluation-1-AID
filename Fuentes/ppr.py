@@ -55,7 +55,19 @@ def gets_features(file):
 
 
 def save_data(F):
-    return
+    # se divide en caracteristicas clase 1 (etiqueta 1) y clase 2 (etiqueta 0)
+    n1 = F.shape[0] // 2
+    F1 = F[:n1]
+    F2 = F[n1:]
+
+    pd.DataFrame(F1).to_csv("dfeatures1.csv", index=False, header=False)
+    pd.DataFrame(F2).to_csv("dfeatures2.csv", index=False, header=False)
+    pd.DataFrame(F).to_csv("dfeatures.csv", index=False, header=False) # Caracteristicas concatenadas
+
+    labels = np.array([1]*len(F1) + [0]*len(F2))
+    pd.DataFrame(labels).to_csv("label.csv", index=False, header=False)
+
+
 
 # Beginning ...
 def main():
