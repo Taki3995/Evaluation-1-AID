@@ -34,8 +34,25 @@ def gets_entropy(x, opt, d, tau, c):
 
 # Obtain Features by use Entropy    
 def gets_features(file):
+
+    # Se cargan los parametros de configuracion desde conf_entropy
+    opt, d, tau, c = conf_entropy()
+
+    # Se cargan archivos de datos (class1 o class2)
+    data = load_data (f"data/{file}").values.flatten()
+
+    # Se obtiene el tamaño de ventana
+    W = int(pd.read_csv("config/conf_ppr.csv")["config"].values[4])
     
-    return(F)
+    # Se recorre en bloques de tamaño W, devolviendo entropia cruzada y normalizada, pero guarda solo la normalizada
+    features = []
+    for i in range(0, len(data) - W + 1, W):
+        segment = data[i:i+W]
+        entropies = gets_entropy(segment, opt, d, tau, c)
+        features.append(entropies[1])
+
+    return np.array(features).reshape(-1, 1)
+
 
 def save_data(F):
     return
