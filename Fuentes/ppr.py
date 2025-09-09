@@ -5,17 +5,19 @@
 
 import pandas   as pd
 import numpy   as np
-from utility import entropy_dispersion, entropy_prmuta
+from utility import entropy_dispersion, entropy_permuta
 
 # Load  parameters Entropy
 def conf_entropy():
-    config = pd.read_csv("config/conf_ppr.csv")["config"].values
+    config = pd.read_csv("config/conf_ppr.csv", header=None).values.flatten()
     opt = 'dispersion' if config[0] == 1 else 'permutation'
     d = int(config[1])
     tau = int(config[2])
     c = int(config[3])
+    W = int(config[4])
 
-    return(opt,d,tau,c)
+    return opt, d, tau, c, W
+
 
 # Load Data
 def load_data(nFile):
@@ -28,7 +30,7 @@ def gets_entropy(x, opt, d, tau, c):
     if opt == 'dispersion':
         return entropy_dispersion(x, d, tau, c)
     elif opt == 'permutation':
-        return entropy_prmuta(x, d, tau)
+        return entropy_permuta(x, d, tau)
     else:
         raise ValueError("Opción no válida. ")
 
@@ -36,13 +38,11 @@ def gets_entropy(x, opt, d, tau, c):
 def gets_features(file):
 
     # Se cargan los parametros de configuracion desde conf_entropy
-    opt, d, tau, c = conf_entropy()
+    opt, d, tau, c, W = conf_entropy()
 
     # Se cargan archivos de datos (class1 o class2)
     data = load_data (f"data/{file}").values.flatten()
-
-    # Se obtiene el tamaño de ventana
-    W = int(pd.read_csv("config/conf_ppr.csv")["config"].values[4])
+    
     
     # Se recorre en bloques de tamaño W, devolviendo entropia cruzada y normalizada, pero guarda solo la normalizada
     features = []
@@ -71,8 +71,7 @@ def save_data(F):
 
 # Beginning ...
 def main():
-    conf_entropy()            
-    load_data()
+
     F1 = gets_features("class1.csv")
     F2 = gets_features("class2.csv")
     F  = np.concatenate((F1, F2), axis = 0)
