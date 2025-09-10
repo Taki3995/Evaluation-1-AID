@@ -5,24 +5,24 @@ import utility as ut
 import pandas as pd
 
 #Save weights and Cost
-def save_w_cost(W, Cost, fW, fC):
+def save_w_cost(W, Cost, fW, fC): # W calculado con iniWs() en train(), Cost calculado en train()
     pd.DataFrame(W).to_csv(fW, index=False, header=False) #guarda pesos en fw (pesos.csv)
     pd.DataFrame(Cost).to_csv(fC, index=False, header=False) #guarda costos en fc (costos.csv) (cada fila representa el costo en una iteracion)
     return
 
 def iniWs(dim):
-    W = np.random.randn(dim) #pesos aleatorios distribución normal
-    V = np.zeros(dim) #vector momentum en ceros, mismo tamaño que w
+    W = np.random.randn(dim) # Se generan pesos aleatorios distribución normal
+    V = np.zeros(dim) # Vector momentum en ceros, mismo tamaño que w
     return(W,V)
 
 #Training by use mGD
-def train(X, y, n_iter, mu, p_train): 
+def train(X, y, n_iter, mu, p_train): # X es la matriz de caracteristicas, N muestras x D caracteriticas
 
     # Cargar datos
-    N = len(X)
-    L = round(N * p_train)
+    N = len(X) # Total muestras
+    L = round(N * p_train) # Calcula cuantas muestras usar para training, el resto se usan en testing
 
-    # Reordenar de forma aleatoria
+    # Mezclar de forma aleatoria los dtos para evitar sesgos
     idx = np.random.permutation(N)
     X, y = X[idx], y[idx]
 
@@ -30,7 +30,7 @@ def train(X, y, n_iter, mu, p_train):
     Xtrn = X[:L]
     ytrn = y[:L]
 
-    # Guardar archivos
+    # Guardar datos de training y testing
     pd.DataFrame(Xtrn).to_csv("dtrn.csv", index=False, header=False)
     pd.DataFrame(ytrn).to_csv("dtrn_label.csv", index=False, header=False)
     pd.DataFrame(X[L:]).to_csv("dtst.csv", index=False, header=False)
@@ -42,12 +42,12 @@ def train(X, y, n_iter, mu, p_train):
 
     # Entrenamiento
     for i in range(n_iter):
-        z = 1 / (1 + np.exp(-np.dot(Xtrn, W))) # Regresion Logistica
-        error = z - ytrn
-        grad = np.dot(Xtrn.T, error) / len(Xtrn)
-        V = 0.9 * V - mu * grad
-        W += V
-        cost = -np.mean(ytrn * np.log(z + 1e-8) + (1 - ytrn) * np.log(1 - z + 1e-8))
+        z = 1 / (1 + np.exp(-np.dot(Xtrn, W))) # Regresion Logistica (sigmoide, combinacion lineal en probabilidades)
+        error = z - ytrn # Error entre prediccion y etiqueta
+        grad = np.dot(Xtrn.T, error) / len(Xtrn) # Gradiente del costo respecto a pesos
+        V = 0.9 * V - mu * grad # Acumula gradiente suavizado
+        W += V # Actualiza vector momentum
+        cost = -np.mean(ytrn * np.log(z + 1e-8) + (1 - ytrn) * np.log(1 - z + 1e-8)) # Calcula cross entropy
         Cost.append(cost)
 
     return W, Cost
