@@ -31,11 +31,11 @@ def train(X, y, n_iter, mu, p_train): # X es la matriz de caracteristicas, N mue
     ytrn = y[:L]
 
     # Guardar datos de training y testing
-    pd.DataFrame(Xtrn).to_csv("dtrn.csv", index=False, header=False)
-    pd.DataFrame(ytrn).to_csv("dtrn_label.csv", index=False, header=False)
-    pd.DataFrame(X[L:]).to_csv("dtst.csv", index=False, header=False)
-    pd.DataFrame(y[L:]).to_csv("dtst_label.csv", index=False, header=False)
-
+    pd.DataFrame(Xtrn).to_csv("dtrn.csv", index=False, header=False) # Caracteristicas
+    pd.DataFrame(ytrn).to_csv("dtrn_label.csv", index=False, header=False) # Etiquetas
+    pd.DataFrame(X[L:]).to_csv("dtst.csv", index=False, header=False) # Caracteristicas
+    pd.DataFrame(y[L:]).to_csv("dtst_label.csv", index=False, header=False) # Etiquetas
+ 
     # Inicializar pesos y momentum
     W, V = iniWs(X.shape[1])
     Cost = []

@@ -14,20 +14,20 @@ def save_measure(cm,Fsc,nFile1,nFile2):
     return()
 # Load weight
 def load_w(nFile):
-    W = np.loadtxt(nFile, delimiter = ',')
+    W = np.loadtxt("pesos.csv", delimiter = ',')
     return(W)
 
 # Load test 
 def load_data(nFile):
     data = np.loadtxt(nFile, delimiter = ',')
-    x = data[:, :-1] # Todas las columnas menos la ultima
-    y = data[:, -1]  # Solo la ultima columna
-    return(x, y)
+    xv = np.loadtxt("dtst.csv", delimiter=',') # xv e yv ya que cada archivo de datos de entrenamiento y testing esta separado en caracteristicas y etiquetas
+    yv = np.loadtxt("dtst_label.csv", delimiter=',') 
+    return(xv, yv)
 
 # Beginning ...
 def main():			
-	load_data()
-	load_w()
+	xv, yv = load_data()
+	W = load_w()
 	zv     = forward(xv,W)      		
 	cm,Fsc = metricas(yv,zv) 	
 	save_measure(cm,Fsc,'cmatrix.csv','Fscores.csv')		
