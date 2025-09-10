@@ -16,12 +16,9 @@ def iniWs(dim):
     return(W,V)
 
 #Training by use mGD
-def train(): 
-    # Cargar configuracion
-    n_iter, mu, p_train = conf_train()
+def train(X, y, n_iter, mu, p_train): 
 
     # Cargar datos
-    X, y = load_data()
     N = len(X)
     L = round(N * p_train)
 
@@ -75,9 +72,9 @@ def conf_train():
 
 # Beginning ...
 def main():    
-    conf_train()
-    load_data()
-    W, Cost = train()
+    n_iter, mu, p_train = conf_train()
+    X, y = load_data()
+    W, Cost = train(X, y, n_iter, mu, p_train)
     save_w_cost(W, Cost, 'pesos.csv','costo.csv')
        
 if __name__ == '__main__':   
