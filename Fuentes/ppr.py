@@ -18,9 +18,10 @@ def conf_entropy():
     return opt, d, tau, c, W
 
 # Load Data
-def load_data(nFile):
-    data = pd.read_csv(nFile, header = None)
-    return(data)
+def load_data():
+    data1 = pd.read_csv("data/class1.csv", header=None).values.flatten()
+    data2 = pd.read_csv("data/class2.csv", header=None).values.flatten()
+    return data1, data2
 
 # Obtain entropy : dispersión and Permutation
 def gets_entropy(x, opt, d, tau, c):
@@ -33,14 +34,8 @@ def gets_entropy(x, opt, d, tau, c):
         raise ValueError("Opción no válida. ")
 
 # Obtain Features by use Entropy    
-def gets_features(file):
+def gets_features(data, opt, d, tau, c, W):
 
-    # Se cargan los parametros de configuracion desde conf_entropy
-    opt, d, tau, c, W = conf_entropy()
-
-    # Se cargan archivos de datos (class1 o class2)
-    data = load_data (f"data/{file}").values.flatten()
-    
     # Se recorre en bloques de tamaño W, devolviendo entropia cruzada y normalizada, pero guarda solo la normalizada
     features = []
 
@@ -66,10 +61,11 @@ def save_data(F):
 
 # Beginning ...
 def main():
-
-    F1 = gets_features("class1.csv")
-    F2 = gets_features("class2.csv")
-    F  = np.concatenate((F1, F2), axis = 0)
+    opt, d, tau, c, W = conf_entropy()
+    data1, data2 = load_data()
+    F1 = gets_features(data1, opt, d, tau, c, W)
+    F2 = gets_features(data2, opt, d, tau, c, W)
+    F  = np.concatenate((F1, F2), axis=0)
     save_data(F)
     
 if __name__ == '__main__':   
