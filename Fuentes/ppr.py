@@ -15,9 +15,7 @@ def conf_entropy():
     tau = int(config[2])
     c = int(config[3])
     W = int(config[4])
-
     return opt, d, tau, c, W
-
 
 # Load Data
 def load_data(nFile):
@@ -43,16 +41,15 @@ def gets_features(file):
     # Se cargan archivos de datos (class1 o class2)
     data = load_data (f"data/{file}").values.flatten()
     
-    
     # Se recorre en bloques de tamaño W, devolviendo entropia cruzada y normalizada, pero guarda solo la normalizada
     features = []
+
     for i in range(0, len(data) - W + 1, W):
         segment = data[i:i+W]
         entropies = gets_entropy(segment, opt, d, tau, c)
         features.append(entropies[1])
 
     return np.array(features).reshape(-1, 1)
-
 
 def save_data(F):
     # se divide en caracteristicas clase 1 (etiqueta 1) y clase 2 (etiqueta 0)
@@ -66,8 +63,6 @@ def save_data(F):
 
     labels = np.array([1]*len(F1) + [0]*len(F2))
     pd.DataFrame(labels).to_csv("label.csv", index=False, header=False)
-
-
 
 # Beginning ...
 def main():

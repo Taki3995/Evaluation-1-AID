@@ -15,7 +15,6 @@ def iniWs(dim):
     V = np.zeros(dim) #vector momentum en ceros, mismo tamaño que w
     return(W,V)
 
-
 #Training by use mGD
 def train(): 
     # Cargar configuracion
@@ -56,14 +55,12 @@ def train():
 
     return W, Cost
 
-
 # Load data to train 
 def load_data():
     # Carga caracteristicas (x) y etiquetas (y) generadas en pre procesamiento
     X = pd.read_csv("dfeatures.csv", header=None).values
     y = pd.read_csv("label.csv", header=None).values.flatten()
     return (X, y)
-
 
 # Load config train for Regression
 def conf_train():
