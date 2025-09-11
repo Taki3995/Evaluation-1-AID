@@ -17,6 +17,9 @@ def iniWs(dim):
 
 #Training by use mGD
 def train(X, y, n_iter, mu, p_train): # X es la matriz de caracteristicas, N muestras x D caracteriticas
+    # Normalizar features para evitar gradientes diminutos
+    X = (X - np.mean(X, axis=0)) / (np.std(X, axis=0) + 1e-8)
+    
     # Cargar datos
     N = len(X) # Total muestras
     L = round(N * p_train) # Calcula cuantas muestras usar para training, el resto se usan en testing
