@@ -10,7 +10,15 @@ from utility import entropy_dispersion, entropy_permuta
 # Carga parametros Entropy
 def conf_entropy():
     config = pd.read_csv("config/conf_ppr.csv", header=None).values.flatten()
-    opt = 'dispersion' if config[0] == 1 else 'permutation'# Tipo de entropía (0-dispersión/1-permuta).
+
+    opt_code = int(config[0])  # 1 = dispersión, 2 = permuta
+    if opt_code == 1:
+        opt = 'dispersion'
+    elif opt_code == 2:
+        opt = 'permutation'
+    else:
+        raise ValueError(f"conf_ppr.csv: opción de entropía inválida ({opt_code}). Debe ser 1 o 2.")
+    
     d = int(config[1]) # Dimensión embebida
     tau = int(config[2]) #Tiempo de retardo embebido
     c = int(config[3]) # Número de clase de Entropía Dispersión
@@ -66,7 +74,7 @@ def save_data(F):
     pd.DataFrame(labels).to_csv("label.csv", index=False, header=False)
 
 # Beginning ...
-def main(): ##
+def main():
     opt, d, tau, c, W = conf_entropy()
     data1, data2 = load_data()
     F1 = gets_features(data1, opt, d, tau, c, W)

@@ -17,7 +17,6 @@ def iniWs(dim):
 
 #Training by use mGD
 def train(X, y, n_iter, mu, p_train): # X es la matriz de caracteristicas, N muestras x D caracteriticas
-
     # Cargar datos
     N = len(X) # Total muestras
     L = round(N * p_train) # Calcula cuantas muestras usar para training, el resto se usan en testing
@@ -30,24 +29,32 @@ def train(X, y, n_iter, mu, p_train): # X es la matriz de caracteristicas, N mue
     Xtrn = X[:L]
     ytrn = y[:L]
 
+    Xtst = X[L:]
+    ytst = y[L:]
+
+    Xtrn_aug = np.hstack([Xtrn, np.ones((Xtrn.shape[0], 1))])
+    Xtst_aug = np.hstack([Xtst, np.ones((Xtst.shape[0], 1))])
+
     # Guardar datos de training y testing
-    pd.DataFrame(Xtrn).to_csv("dtrn.csv", index=False, header=False) # Caracteristicas
-    pd.DataFrame(ytrn).to_csv("dtrn_label.csv", index=False, header=False) # Etiquetas
-    pd.DataFrame(X[L:]).to_csv("dtst.csv", index=False, header=False) # Caracteristicas
-    pd.DataFrame(y[L:]).to_csv("dtst_label.csv", index=False, header=False) # Etiquetas
+    pd.DataFrame(Xtrn_aug).to_csv("dtrn.csv", index=False, header=False)
+    pd.DataFrame(ytrn).to_csv("dtrn_label.csv", index=False, header=False)
+    pd.DataFrame(Xtst_aug).to_csv("dtst.csv", index=False, header=False)
+    pd.DataFrame(ytst).to_csv("dtst_label.csv", index=False, header=False)
  
     # Inicializar pesos y momentum
-    W, V = iniWs(X.shape[1])
+    W, V = iniWs(Xtrn_aug.shape[1])
     Cost = []
+    eps = 1e-8
 
     # Entrenamiento
     for i in range(n_iter):
-        z = 1 / (1 + np.exp(-np.dot(Xtrn, W))) # Regresion Logistica (sigmoide, combinacion lineal en probabilidades)
+        z = 1 / (1 + np.exp(-np.dot(Xtrn_aug, W))) # Regresion Logistica (sigmoide, combinacion lineal en probabilidades)
         error = z - ytrn # Error entre prediccion y etiqueta
-        grad = np.dot(Xtrn.T, error) / len(Xtrn) # Gradiente del costo respecto a pesos
+        grad = np.dot(Xtrn_aug.T, error) / len(Xtrn_aug) # Gradiente del costo respecto a pesos
         V = 0.9 * V - mu * grad # Acumula gradiente suavizado
         W += V # Actualiza vector momentum
-        cost = -np.mean(ytrn * np.log(z + 1e-8) + (1 - ytrn) * np.log(1 - z + 1e-8)) # Calcula cross entropy
+        cost = -np.mean(ytrn * np.log(z + eps) + (1 - ytrn) * np.log(1 - z + eps)) # Calcula cross entropy
+        #cost = -np.mean(ytrn * np.log(z) + (1 - ytrn) * np.log(1 - z))
         Cost.append(cost)
 
     return W, Cost

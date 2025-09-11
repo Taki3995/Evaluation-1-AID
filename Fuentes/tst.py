@@ -14,17 +14,17 @@ def measure(yv,zv):
     for yt, yp in zip(yv, y_pred): # Recorrer tupla de valor usando zip (true label vs predicted)
         cmatrix[int(yt), int(yp)] += 1 # Matriz de confusion
     
+    Fscores = []
     for i in [0, 1]: # Busca valor en matriz de confusion
         TP = cmatrix[i, i]
         FP = cmatrix[1 - i, i]
         FN = cmatrix[i, 1 - i]
 
-    Fscores = []
-    precision = TP / (TP + FP) if (TP + FP) > 0 else 0
-    recall = TP / (TP + FN) if (TP + FN) > 0 else 0
-    F = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
+        precision = TP / (TP + FP) if (TP + FP) > 0 else 0
+        recall = TP / (TP + FN) if (TP + FN) > 0 else 0
+        F = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
 
-    Fscores.append(F)
+        Fscores.append(F)
 
     return(cmatrix, np.array(Fscores))
 
