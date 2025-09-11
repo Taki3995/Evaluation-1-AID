@@ -1,5 +1,6 @@
 # Testing for Logistic Regresion
 import numpy as np
+from plotst import plot_cost, plot_confusion, plot_metrics
 
 def forward(xv,w): # Aplica Regresion Logistica
     zv = 1 / (1 + np.exp(-np.dot(xv, w)))
@@ -45,13 +46,21 @@ def load_data():
     yv = np.loadtxt("dtst_label.csv", delimiter=',') 
     return(xv, yv)
 
+
+
 # Beginning ...
-def main():			
-	xv, yv = load_data()
-	W = load_w()
-	zv     = forward(xv,W)      		
-	cm,Fsc = measure(yv,zv) 	
-	save_measure(cm,Fsc,'cmatrix.csv','Fscores.csv')		
+def main():
+    xv, yv = load_data()
+    W = load_w()
+    zv = forward(xv, W)
+    cm, Fsc = measure(yv, zv)
+    save_measure(cm, Fsc, 'cmatrix.csv', 'Fscores.csv')
+
+    # Visualización
+    plot_cost()
+    plot_confusion()
+    plot_metrics()
 
 if __name__ == '__main__':   
-	 main()
+	main()
+    

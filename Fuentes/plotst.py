@@ -42,9 +42,3 @@ def plot_metrics():
     plt.tight_layout()
     plt.savefig("grafico_metricas.png")
     plt.show()
-
-# Ejecutar todos
-if __name__ == "__main__":
-    plot_cost()
-    plot_confusion()
-    plot_metrics()
