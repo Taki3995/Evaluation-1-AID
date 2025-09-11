@@ -1,6 +1,6 @@
 # Testing for Logistic Regresion
 import numpy as np
-from plotst import plot_cost, plot_confusion
+# from plotst import plot_cost, plot_confusion # descomentar y correr plotst.py antes si se quiere graficar
 
 def forward(xv,w): # Aplica Regresion Logistica
     zv = 1 / (1 + np.exp(-np.dot(xv, w)))
@@ -56,9 +56,9 @@ def main():
     cm, Fsc = measure(yv, zv)
     save_measure(cm, Fsc, 'cmatrix.csv', 'Fscores.csv')
 
-    # Visualización
-    plot_cost()
-    plot_confusion()
+    # Visualización # descomentar y correr plotst.py antes si se quiere graficar
+    #plot_cost()
+    #plot_confusion()
 
 if __name__ == '__main__':   
 	main()
