@@ -35,7 +35,7 @@ def gets_entropy(x, opt, d, tau, c):
 
 # Obtain Features by use Entropy    
 def gets_features(data, opt, d, tau, c, W):
-    N, L = data.shape
+    N = data.shape
     K = N // W # Divide matriz en k bloques de tamaño w filas c/u
     feats = np.zeros((K, W)) # Matriz vacia para guardar caracteristicas
     
