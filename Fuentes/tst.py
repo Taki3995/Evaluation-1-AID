@@ -1,6 +1,6 @@
 # Testing for Logistic Regresion
 import numpy as np
-from plotst import plot_cost, plot_confusion, plot_metrics
+from plotst import plot_cost, plot_confusion
 
 def forward(xv,w): # Aplica Regresion Logistica
     zv = 1 / (1 + np.exp(-np.dot(xv, w)))
