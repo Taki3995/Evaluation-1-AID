@@ -59,7 +59,6 @@ def main():
     # Visualización
     plot_cost()
     plot_confusion()
-    plot_metrics()
 
 if __name__ == '__main__':   
 	main()
