@@ -35,7 +35,11 @@ def gets_entropy(x, opt, d, tau, c):
 
 # Obtain Features by use Entropy    
 def gets_features(data, opt, d, tau, c, W):
-    N = data.shape
+    N = data.shape[0]
+
+    if N % W != 0:
+        raise ValueError(f"El número de filas ({N}) no es divisible por el tamaño de segmento W = {W}")
+    
     K = N // W # Divide matriz en k bloques de tamaño w filas c/u
     feats = np.zeros((K, W)) # Matriz vacia para guardar caracteristicas
     

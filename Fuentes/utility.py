@@ -47,7 +47,7 @@ def entropy_dispersion(x,d,tau,c):
     r = c ** d
     n_enter = entr / np.log2(r)
 
-    return(entr, n_enter)
+    return(n_enter)
 
 # Permutation Entropy
 def entropy_permuta(x, m, tau):
